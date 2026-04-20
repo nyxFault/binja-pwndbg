@@ -12,10 +12,10 @@ Binary Ninja-powered helpers for pwndbg with live sync support.
 
 ## ✨ Overview
 
-This repo includes **two plugins**:
+This repo includes **two parts**:
 
-- `plugin/binja_pwndbg.py` - pwndbg command extension
-- `binja_plugin/binja_rpc_server.py` - Binary Ninja XML-RPC server plugin (live sync)
+- `plugin/binja_pwndbg.py` — pwndbg command extension
+- [`bn-pwndbg-sync/`](https://github.com/nyxFault/bn-pwndbg-sync) — Binary Ninja XML-RPC plugin ([git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules))
 
 ## 🚀 Features
 
@@ -38,7 +38,18 @@ This repo includes **two plugins**:
 
 ## 🛠️ Install
 
-1. Clone this repo.
+1. Clone this repo **with submodules** (includes the Binary Ninja plugin):
+
+```bash
+git clone --recurse-submodules https://github.com/nyxFault/binja-pwndbg.git
+```
+
+If you already cloned without submodules:
+
+```bash
+git submodule update --init --recursive
+```
+
 2. Add this to your `.gdbinit`:
 
 ```gdb
@@ -55,9 +66,11 @@ echo 'source /path/to/binja-pwndbg/plugin/binja_pwndbg.py' >> ~/.gdbinit
 
 ## 🔌 Binary Ninja Live Sync Plugin
 
-This is now packaged as a proper Binary Ninja plugin (`binja_plugin/plugin.json` + `binja_plugin/__init__.py`).
+Standalone repo: **[nyxFault/bn-pwndbg-sync](https://github.com/nyxFault/bn-pwndbg-sync)**.
 
-Copy the **entire** `binja_plugin` folder into your Binary Ninja user plugin dir (usually `~/.binaryninja/plugins/`), then restart Binary Ninja.
+From this monorepo, copy the **`bn-pwndbg-sync/`** folder (the submodule checkout) into your Binary Ninja user plugin directory (usually `~/.binaryninja/plugins/`), then restart Binary Ninja.
+
+You can also clone only the BN plugin: `git clone https://github.com/nyxFault/bn-pwndbg-sync.git`
 
 Start server from Binary Ninja:
 

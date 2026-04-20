@@ -1,0 +1,3 @@
+[submodule "bn-pwndbg-sync"]
+	path = bn-pwndbg-sync
+	url = https://github.com/nyxFault/bn-pwndbg-sync.git
