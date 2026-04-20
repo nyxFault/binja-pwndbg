@@ -55,7 +55,9 @@ echo 'source /path/to/binja-pwndbg/plugin/binja_pwndbg.py' >> ~/.gdbinit
 
 ## 🔌 Binary Ninja Live Sync Plugin
 
-Copy `binja_plugin/binja_rpc_server.py` into your Binary Ninja user plugin dir (usually `~/.binaryninja/plugins/`), then restart Binary Ninja.
+This is now packaged as a proper Binary Ninja plugin (`binja_plugin/plugin.json` + `binja_plugin/__init__.py`).
+
+Copy the **entire** `binja_plugin` folder into your Binary Ninja user plugin dir (usually `~/.binaryninja/plugins/`), then restart Binary Ninja.
 
 Start server from Binary Ninja:
 

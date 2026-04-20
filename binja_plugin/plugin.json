@@ -1,0 +1,30 @@
+{
+  "pluginmetadataversion": 2,
+  "name": "binja-pwndbg-rpc",
+  "type": [
+    "helper"
+  ],
+  "api": [
+    "python3"
+  ],
+  "description": "Live XML-RPC bridge from Binary Ninja to pwndbg/GDB.",
+  "longdescription": "Provides PluginCommand actions to start/stop a localhost XML-RPC server exposing active BinaryView queries (decomp/IL/calltree/symbol resolution) for pwndbg integration.",
+  "license": {
+    "name": "MIT",
+    "text": "MIT License"
+  },
+  "platforms": [
+    "Linux",
+    "Darwin",
+    "Windows"
+  ],
+  "installinstructions": {
+    "Linux": "Copy the entire binja_plugin folder into ~/.binaryninja/plugins/ and restart Binary Ninja.",
+    "Darwin": "Copy the entire binja_plugin folder into ~/Library/Application Support/Binary Ninja/plugins/ and restart Binary Ninja.",
+    "Windows": "Copy the entire binja_plugin folder into %APPDATA%\\\\Binary Ninja\\\\plugins\\\\ and restart Binary Ninja."
+  },
+  "version": "0.1.0",
+  "author": "nyxFault",
+  "minimumbinaryninjaversion": 3164
+}
+
