@@ -1,1 +1,127 @@
 # binja-pwndbg
+
+<p align="left">
+  <img alt="Platform Linux" src="https://img.shields.io/badge/platform-linux-blue?logo=linux">
+  <img alt="Debugger pwndbg" src="https://img.shields.io/badge/debugger-pwndbg-7a3cff">
+  <img alt="Disassembler Binary Ninja" src="https://img.shields.io/badge/disassembler-Binary%20Ninja-f59e0b">
+  <img alt="Sync XML-RPC" src="https://img.shields.io/badge/sync-XML--RPC-22c55e">
+  <img alt="Language Python" src="https://img.shields.io/badge/language-python-3776ab?logo=python&logoColor=white">
+</p>
+
+Binary Ninja-powered helpers for pwndbg with live sync support.
+
+## ✨ Overview
+
+This repo includes **two plugins**:
+
+- `plugin/binja_pwndbg.py` - pwndbg command extension
+- `binja_plugin/binja_rpc_server.py` - Binary Ninja XML-RPC server plugin (live sync)
+
+## 🚀 Features
+
+- `bn-connect [path]` - one-shot connect (prefer RPC, fallback local BNDB/binary)
+- `bn-init [path]` - initialize backend for current target
+- `bn-sync [path_to_bndb]` - set/refresh BNDB source
+- `bn-rpc [off|URL]` - configure/check XML-RPC endpoint
+- `bn-decompile [addr_or_symbol]` - pseudo-C decompile (default: `$pc`)
+- `bn-il <level> [addr_or_symbol]` - unified IL view (`disasm`, `llil`, `mlil`, `hlil`, `pseudoc`)
+- `bn-disasm`, `bn-llil`, `bn-mlil`, `bn-hlil`, `bn-pseudoc`
+- `bn-calltree [addr_or_symbol]` - incoming callers + outgoing callees
+- Symbol fallback for stripped binaries (e.g. `bn-decompile main`)
+- Tab completion for symbols/functions in commands
+
+## 📋 Requirements
+
+- pwndbg + GDB with Python support
+- Binary Ninja installed
+- `binaryninja` importable in the helper Python runtime
+
+## 🛠️ Install
+
+1. Clone this repo.
+2. Add this to your `.gdbinit`:
+
+```gdb
+source /home/fury/Desktop/Projects/binja-pwndbg/plugin/binja_pwndbg.py
+```
+
+3. Launch GDB/pwndbg on your target.
+
+Append automatically:
+
+```bash
+echo 'source /home/fury/Desktop/Projects/binja-pwndbg/plugin/binja_pwndbg.py' >> ~/.gdbinit
+```
+
+## 🔌 Binary Ninja Live Sync Plugin
+
+Copy `binja_plugin/binja_rpc_server.py` into your Binary Ninja user plugin dir (usually `~/.binaryninja/plugins/`), then restart Binary Ninja.
+
+Start server from Binary Ninja:
+
+- `Plugins -> Pwndbg Sync -> Start XML-RPC Server`
+
+Now pwndbg can consume live renames/types/comments from the active BinaryView.
+
+## 💻 Example Commands
+
+```gdb
+bn-connect
+bn-connect /path/to/target
+bn-rpc
+bn-rpc http://127.0.0.1:31337
+bn-sync
+bn-sync /path/to/target.bndb
+
+bn-decompile $pc
+bn-decompile main
+bn-il disasm
+bn-il llil main
+bn-il mlil $pc
+bn-il hlil verify_token
+bn-il pseudoc
+
+bn-disasm
+bn-llil
+bn-mlil
+bn-hlil
+bn-pseudoc
+bn-calltree verify_token
+```
+
+## 🧪 Demo Crackme
+
+Included demo files:
+
+- `demo/crackme.c`
+- `demo/Makefile`
+- `demo/crackme` (stripped target)
+- `demo/crackme_dbg` (debug target; build with `make -C demo debug`)
+
+Quick run:
+
+```bash
+gdb demo/crackme
+```
+
+Inside pwndbg:
+
+```gdb
+source /home/fury/Desktop/Projects/binja-pwndbg/plugin/binja_pwndbg.py
+start
+bn-connect
+bn-decompile main
+bn-calltree main
+bn-il hlil main
+```
+
+## 📝 Notes
+
+- Binary Ninja helper runs in a separate process to avoid crashing GDB.
+- Environment auto-detects your Binary Ninja wrapper (`~/.local/bin/binaryninja`) for `PYTHONHOME`/library paths.
+- Runtime addresses are normalized for PIE binaries using `info proc mappings`.
+- Output is colorized for terminal readability.
+- Live sync uses XML-RPC when reachable; otherwise fallback is local BNDB/binary backend.
+- `BINJA_PWNDBG_BNDB=/path/to/file.bndb` forces BNDB source.
+- `BINJA_PWNDBG_RPC_URL=http://127.0.0.1:31337` sets default RPC endpoint.
+- `BINJA_PWNDBG_PYTHON=/path/to/python` overrides helper interpreter.
