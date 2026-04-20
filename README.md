@@ -148,6 +148,9 @@ bn-il hlil main
 
 ## 📝 Notes
 
+- If you change code under `bn-pwndbg-sync/`, **push that repo first**, then commit/push this repo so the submodule pointer stays valid for others:
+  - `cd bn-pwndbg-sync && git push origin main`
+  - `cd .. && git add bn-pwndbg-sync && git commit -m "Bump bn-pwndbg-sync" && git push`
 - Binary Ninja helper runs in a separate process to avoid crashing GDB.
 - Environment auto-detects your Binary Ninja wrapper (`~/.local/bin/binaryninja`) for `PYTHONHOME`/library paths.
 - Runtime addresses are normalized for PIE binaries using `info proc mappings`.
